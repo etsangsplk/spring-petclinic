@@ -6,8 +6,7 @@ import io.opentracing.util.GlobalTracer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
-
-import java.util.Objects;
+import org.springframework.util.Assert;
 
 @Configuration
 public class TracerConfiguration {
@@ -24,7 +23,7 @@ public class TracerConfiguration {
      * @return Tracer returns a opentracing tracer.
      */
     public Tracer getTracer(String serviceName) {
-        Objects.requireNonNull(serviceName, "service name cannot be null");
+        Assert.hasText(serviceName, "service name cannot be null");
         LOGGER.info("Initializing a tracer for service {}", serviceName);
         try {
             if (Lightstep.isEnabled() == true) {
@@ -35,6 +34,7 @@ public class TracerConfiguration {
             }
             if (Jaeger.isEnabled() == true) {
                 LOGGER.info("Jaeger is enabled");
+                // Jaeger API returns a "config", so have to register tracer inside registerTracer.
                 this.config = Jaeger.registerTracer(serviceName);
                 return GlobalTracer.get();
             }
