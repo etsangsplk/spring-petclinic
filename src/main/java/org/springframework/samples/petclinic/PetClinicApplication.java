@@ -39,5 +39,4 @@ public class PetClinicApplication {
         LOGGER.info("Finished running application");
 
     }
-
 }

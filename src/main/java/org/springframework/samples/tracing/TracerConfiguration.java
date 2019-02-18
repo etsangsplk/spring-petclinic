@@ -5,9 +5,11 @@ import io.opentracing.noop.NoopTracerFactory;
 import io.opentracing.util.GlobalTracer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.Objects;
 
+@Configuration
 public class TracerConfiguration {
     private static final Logger LOGGER = LogManager.getLogger();
 
