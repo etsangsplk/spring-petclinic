@@ -122,6 +122,12 @@
           <version>0.33.1</version>
       </dependency>
 
+      <!-- https://mvnrepository.com/artifact/com.lightstep.tracer/lightstep-tracer-jre -->
+      <dependency>
+          <groupId>com.lightstep.tracer</groupId>
+          <artifactId>lightstep-tracer-jre</artifactId>
+          <version>0.15.0</version>
+      </dependency>
 
   </dependencies>
 
