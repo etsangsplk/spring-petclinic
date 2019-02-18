@@ -108,6 +108,21 @@
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
     </dependency>
+
+      <!-- https://mvnrepository.com/artifact/io.jaegertracing/jaeger-core -->
+      <dependency>
+          <groupId>io.jaegertracing</groupId>
+          <artifactId>jaeger-core</artifactId>
+          <version>0.33.1</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/io.jaegertracing/jaeger-thrift -->
+      <dependency>
+          <groupId>io.jaegertracing</groupId>
+          <artifactId>jaeger-thrift</artifactId>
+          <version>0.33.1</version>
+      </dependency>
+
+
   </dependencies>
 
   <build>
