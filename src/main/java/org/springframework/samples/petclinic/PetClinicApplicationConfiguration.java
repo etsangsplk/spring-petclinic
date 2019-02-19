@@ -17,7 +17,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import io.opentracing.contrib.web.servlet.filter.TracingFilter;
 import io.opentracing.contrib.web.servlet.filter.ServletFilterSpanDecorator;
-//import io.opentracing.util.GlobalTracer;
+import io.opentracing.contrib.spring.web.interceptor.*;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -38,7 +38,8 @@ public class PetClinicApplicationConfiguration implements WebMvcConfigurer, Serv
 
     @Bean
     public List<HandlerInterceptorSpanDecorator> spanDecorators() {
-        return Arrays.asList(new TracingHandlerDecorator());
+        return Arrays.asList(new TracingHandlerDecorator(), HandlerInterceptorSpanDecorator.STANDARD_LOGS,
+            HandlerInterceptorSpanDecorator.HANDLER_METHOD_OPERATION_NAME);
     }
 
     @Bean
@@ -49,21 +50,17 @@ public class PetClinicApplicationConfiguration implements WebMvcConfigurer, Serv
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new TracingHandlerInterceptor(GlobalTracer.get(), spanDecorators()));
-        LOGGER.info("++++++++++++++++++++++++");
     }
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        LOGGER.info("xxxxxxxxxxxxxx");
         sce.getServletContext().setAttribute(TracingFilter.SPAN_DECORATORS,
             Collections.singletonList(ServletFilterSpanDecorator.STANDARD_TAGS));
         sce.getServletContext().setAttribute(TracingFilter.SKIP_PATTERN, Pattern.compile("/health"));
-        LOGGER.info("yyyyyyyyyyyyyy");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
 
     }
-    // de519feb9d32ab8b443d073e0950bafd
 }

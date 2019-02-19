@@ -44,7 +44,6 @@ public class TracerConfiguration {
         } catch (Exception ex) {
             LOGGER.warn("Tracer initialization failed with exception={}. returning NoopTracer.",
                 ex.getMessage());
-           // GlobalTracer.register(NoopTracerFactory.create());
             return NoopTracerFactory.create();
         }
     }

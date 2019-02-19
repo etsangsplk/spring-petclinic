@@ -13,15 +13,10 @@ import io.opentracing.contrib.spring.web.interceptor.*;
 import io.opentracing.contrib.web.servlet.filter.TracingFilter;
 
 @Configuration
-//@Import({TracingHandlerInterceptor.class})
 public class TracingFilterConfiguration {
     private static Logger LOGGER = LogManager.getLogger();
 
-    //@Autowired
-    //private Tracer tracer;
-
     public FilterRegistrationBean tracingFilter() {
-        LOGGER.info("********Regiter Tracing Filter********");
         Tracer tracer = GlobalTracer.get();
         TracingFilter tracingFilter = new TracingFilter(tracer);
 
@@ -29,7 +24,6 @@ public class TracingFilterConfiguration {
         filterRegistrationBean.addUrlPatterns("/*");
         filterRegistrationBean.setOrder(Integer.MIN_VALUE);
         filterRegistrationBean.setAsyncSupported(false);
-        LOGGER.info("*******Regiter Tracing Filter ********");
         return filterRegistrationBean;
     }
 

@@ -21,13 +21,13 @@ public class JaegerSpanReporter implements Reporter {
     public void report(JaegerSpan span) {
         if (span != null) {
             JaegerSpanContext spanContext = span.context();
-            LOGGER.info(String.format(spanLogMessageFmt,
+            LOGGER.info(spanLogMessageFmt,
                 spanContext.getTraceId(),
                 spanContext.getSpanId(),
                 spanContext.getParentId(),
                 span.getOperationName(),
                 span.getStart(),
-                span.getDuration()));
+                span.getDuration());
         }
     }
 

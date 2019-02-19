@@ -10,6 +10,8 @@ import org.bson.types.ObjectId;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class TracingHandlerDecorator implements HandlerInterceptorSpanDecorator {
     private static Logger LOGGER = LogManager.getLogger();
@@ -18,16 +20,13 @@ public class TracingHandlerDecorator implements HandlerInterceptorSpanDecorator 
     public void onPreHandle(HttpServletRequest httpServletRequest,
                             Object handler,
                             Span span) {
-        String metaData = HandlerUtils.methodName(handler);
-        LOGGER.info("*************tracinghandledecorator***********");
-        LOGGER.info("*******Global tracer*********** ={}", io.opentracing.util.GlobalTracer.get());
+        String metaData = URLUtils.methodName(handler);
         if (metaData != null) {
             span.setOperationName(metaData);
-            //SplunkUri uri = new SplunkUri(httpServletRequest.getRequestURI());
-            //String tenantId = uri.getTenant();
-            String requestId = getRequestId(httpServletRequest);
+            String requestId = URLUtils.getRequestId(httpServletRequest);
+            String tenant = URLUtils.getTenantId(httpServletRequest);
             span.setTag("requestId", requestId);
-            //span.setTag("tenant", tenantId);
+            span.setTag("tenant", tenant);
         }
     }
 
@@ -36,48 +35,56 @@ public class TracingHandlerDecorator implements HandlerInterceptorSpanDecorator 
                                   HttpServletResponse httpServletResponse,
                                   Object handler,
                                   Exception ex,
-                                  Span span) {
-        LOGGER.info("*************tracinghandledecorator ONAFTERCOMPLETION ***********");
-    }
+                                  Span span) {}
 
     @Override
     public void onAfterConcurrentHandlingStarted(HttpServletRequest httpServletRequest,
                                                  HttpServletResponse httpServletResponse,
                                                  Object handler,
-                                                 Span span) {
-        LOGGER.info("*************tracinghandledecorator AFTERCONCURRENTHANDLEING  STARTED***********");
-    }
+                                                 Span span) {}
 
-    private String getRequestId(HttpServletRequest request) {
-        return Optional
-            .ofNullable(request.getHeader("X-Request-Id"))
-            .orElseGet(() -> ObjectId.get().toString());
-    }
 
-    /**
-     * Helper class for deriving tags/logs from handler object.
-     */
-    static class HandlerUtils {
-        private HandlerUtils() {}
+    static class URLUtils {
+
+        static Pattern PATH_PATTERN = Pattern.compile("\\/?(?<tenantId>.*?)\\/streams\\/v.*?\\/.*");
 
         /**
-         * Class name of a handler serving request.
+         * Extract tenant id from the request
+         *
+         * @param request http servelet request
+         * @return tenant id, or null if tenant id couldn't be extracted
          */
-        public static final String HANDLER_CLASS_NAME = "handler.class_simple_name";
-        /**
-         * Method name of handler serving request.
-         */
-        public static final String HANDLER_METHOD_NAME = "handler.method_name";
-        /**
-         * Spring handler object.
-         */
-        public static final String HANDLER = "handler";
+        static String getTenantId(HttpServletRequest request) {
+            String uri = request.getRequestURI();
+            Matcher matcher = PATH_PATTERN.matcher(uri);
+            if (matcher.find()) {
+                return matcher.group("tenantId");
+            }
+            return "";
+        }
 
-        public static String methodName(Object handler) {
+        /**
+         * Extract request id from the request
+         *
+         * @param request http servelet request
+         * @return tenant id, or null if tenant id couldn't be extracted
+         */
+        static String getRequestId(HttpServletRequest request) {
+            return Optional
+                .ofNullable(request.getHeader("X-Request-Id"))
+                .orElseGet(() -> ObjectId.get().toString());
+        }
+
+        /**
+         * Extract method name from handler for span name.
+         *
+         * @param model the request URI
+         * @return tenant id, or null if tenant id couldn't be extracted
+         */
+        static String methodName(Object handler) {
             return handler instanceof HandlerMethod
                 ? ((HandlerMethod) handler).getMethod().getName() : null;
         }
+
     }
-
-
 }

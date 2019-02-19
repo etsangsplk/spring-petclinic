@@ -34,7 +34,6 @@ public class Jaeger {
     private static final String JAEGER_ENABLED_ENVVAR = "JAEGER_ENABLED";
     private static final String JAEGER_AGENT_HOST_ENVVAR = "JAEGER_AGENT_HOST";
     private static final String JAEGER_AGENT_PORT_ENVVAR = "JAEGER_AGENT_PORT";
-    //private static final Boolean JAEGER_REPORTER_LOG_SPANS;
 
     /**
      * Construct a global Jaeger tracer instance.
@@ -56,8 +55,6 @@ public class Jaeger {
                 loggingReporter,
                 spanReporter,
                 remoteReporter);
-
-
             JaegerTracer tracer = tracerBuilder
                 .withSampler(new ConstSampler(true)) // Sending all spans for now.
                 .withReporter(compositeReporter)
