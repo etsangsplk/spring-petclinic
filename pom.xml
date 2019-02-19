@@ -109,6 +109,21 @@
       <optional>true</optional>
     </dependency>
 
+      <!-- https://mvnrepository.com/artifact/org.bson/bson -->
+      <dependency>
+          <groupId>org.bson</groupId>
+          <artifactId>bson</artifactId>
+          <version>2.6.5-no-key-checks-joda-gridfs-partial-save</version>
+      </dependency>
+
+
+      <!-- https://mvnrepository.com/artifact/io.opentracing.contrib/opentracing-spring-web -->
+      <dependency>
+          <groupId>io.opentracing.contrib</groupId>
+          <artifactId>opentracing-spring-web</artifactId>
+          <version>1.0.1</version>
+      </dependency>
+
       <!-- https://mvnrepository.com/artifact/io.jaegertracing/jaeger-core -->
       <dependency>
           <groupId>io.jaegertracing</groupId>
@@ -128,6 +143,7 @@
           <artifactId>lightstep-tracer-jre</artifactId>
           <version>0.15.0</version>
       </dependency>
+
 
   </dependencies>
 
