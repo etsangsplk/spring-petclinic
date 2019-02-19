@@ -109,11 +109,10 @@
       <optional>true</optional>
     </dependency>
 
-      <!-- https://mvnrepository.com/artifact/org.bson/bson -->
       <dependency>
-          <groupId>org.bson</groupId>
+          <groupId>org.mongodb</groupId>
           <artifactId>bson</artifactId>
-          <version>2.6.5-no-key-checks-joda-gridfs-partial-save</version>
+          <version>2.3</version>
       </dependency>
 
 
