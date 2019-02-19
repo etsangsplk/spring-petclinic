@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic;
 
+import org.springframework.context.annotation.Configuration;
 import org.springframework.samples.tracing.TracerConfiguration;
 import org.springframework.samples.petclinic.PetClinicApplication;
 import org.springframework.samples.tracing.TracingHandlerDecorator;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import java.util.Arrays;
 import java.util.List;
 
+@Configuration
 public class PetClinicApplicationConfiguration implements WebMvcConfigurer {
     private static Logger LOGGER = LogManager.getLogger();
 
