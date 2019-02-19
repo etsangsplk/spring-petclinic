@@ -1,10 +1,10 @@
 package org.springframework.samples.tracing;
 
 import io.opentracing.Span;
+import io.opentracing.contrib.spring.web.interceptor.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.method.HandlerMethod;
-import io.opentracing.contrib.spring.web.interceptor.HandlerInterceptorSpanDecorator;
 import org.bson.types.ObjectId;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +17,7 @@ public class TracingHandlerDecorator implements HandlerInterceptorSpanDecorator 
     @Override
     public void onPreHandle(HttpServletRequest httpServletRequest,
                             Object handler,
+
                             Span span) {
         String metaData = HandlerUtils.methodName(handler);
         LOGGER.info("*************tracinghandledecorator***********");
