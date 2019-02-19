@@ -17,7 +17,6 @@ public class TracingHandlerDecorator implements HandlerInterceptorSpanDecorator 
     @Override
     public void onPreHandle(HttpServletRequest httpServletRequest,
                             Object handler,
-
                             Span span) {
         String metaData = HandlerUtils.methodName(handler);
         LOGGER.info("*************tracinghandledecorator***********");
