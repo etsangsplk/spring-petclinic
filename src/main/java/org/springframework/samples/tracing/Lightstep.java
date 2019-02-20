@@ -11,10 +11,10 @@ import org.apache.logging.log4j.Logger;
 import java.net.MalformedURLException;
 import java.util.NoSuchElementException;
 
-public class Lightstep {
-    private static Logger LOGGER = LogManager.getLogger();
+class Lightstep {
+    private static final Logger LOGGER = LogManager.getLogger();
 
-    private static boolean LIGHTSTEP_ENABLED = false;
+    private static final boolean LIGHTSTEP_ENABLED = false;
     private static String  LIGHTSTEP_ACCESSTOKEN = "";
 
     private static final String LIGHTSTEP_ENABLED_ENVVAR = "LIGHTSTEP_ENABLED";
@@ -48,12 +48,8 @@ public class Lightstep {
             LOGGER.info("Tracer initialized with service name {}.", serviceName);
             return tracer;
 
-        } catch (NoSuchElementException ex) {
-            LOGGER.warn("Tracer initialization failed with exception={}. returning NoopTracer.",
-                ex.getMessage());
-            return NoopTracerFactory.create();
-        } catch (MalformedURLException ex) {
-            // TODO: Don't know why Malformed exception is not caught here.
+        } catch (NoSuchElementException
+            | MalformedURLException ex) {
             LOGGER.warn("Tracer initialization failed with exception={}. returning NoopTracer.",
                 ex.getMessage());
             return NoopTracerFactory.create();
@@ -74,7 +70,7 @@ public class Lightstep {
      * Releases all resources held by a LightStep tracer.
      * @return returns a boolean to indicate if lighttep is enabled.
      */
-    public static final boolean isEnabled() {
+    public static boolean isEnabled() {
         return ConfigUtil.getOptionalBoolean(LIGHTSTEP_ENABLED_ENVVAR,
             LIGHTSTEP_ENABLED);
     }

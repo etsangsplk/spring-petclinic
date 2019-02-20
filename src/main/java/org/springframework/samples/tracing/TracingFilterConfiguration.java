@@ -4,12 +4,8 @@ import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import io.opentracing.contrib.spring.web.interceptor.*;
 import io.opentracing.contrib.web.servlet.filter.TracingFilter;
 
 @Configuration

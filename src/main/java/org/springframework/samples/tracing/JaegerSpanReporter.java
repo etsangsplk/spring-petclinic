@@ -6,11 +6,11 @@ import io.jaegertracing.spi.Reporter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class JaegerSpanReporter implements Reporter {
-    private static Logger LOGGER = LogManager.getLogger();
+class JaegerSpanReporter implements Reporter {
+    private static final Logger LOGGER = LogManager.getLogger();
 
     //@SuppressWarnings("checkstyle:LineLength")
-    private static String spanLogMessageFmt = "Span finished traceID={} "
+    private static final String spanLogMessageFmt = "Span finished traceID={} "
         .concat("spanID={} ")
         .concat("parentSpanID={} ")
         .concat("operation={} ")

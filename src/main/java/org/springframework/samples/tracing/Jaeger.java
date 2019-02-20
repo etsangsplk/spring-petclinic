@@ -1,33 +1,23 @@
 package org.springframework.samples.tracing;
 
 import io.jaegertracing.Configuration;
-import io.jaegertracing.Configuration.CodecConfiguration;
-import io.jaegertracing.Configuration.ReporterConfiguration;
-import io.jaegertracing.Configuration.SamplerConfiguration;
 import io.jaegertracing.internal.JaegerTracer;
-import io.jaegertracing.internal.metrics.Metrics;
-import io.jaegertracing.internal.metrics.NoopMetricsFactory;
 import io.jaegertracing.internal.reporters.CompositeReporter;
-import io.jaegertracing.internal.reporters.LoggingReporter;
-import io.jaegertracing.internal.reporters.NoopReporter;
 import io.jaegertracing.internal.reporters.RemoteReporter;
 import io.jaegertracing.internal.samplers.ConstSampler;
-import io.jaegertracing.internal.senders.NoopSender;
 import io.jaegertracing.spi.Reporter;
 import io.jaegertracing.spi.Sender;
 import io.jaegertracing.thrift.internal.senders.UdpSender;
-import io.opentracing.Tracer;
-import io.opentracing.noop.NoopTracerFactory;
 import io.opentracing.util.GlobalTracer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.NoSuchElementException;
 
-public class Jaeger {
-    private static Logger LOGGER = LogManager.getLogger();
+class Jaeger {
+    private static final Logger LOGGER = LogManager.getLogger();
 
-    private static boolean JAEGER_ENABLED = false;
+    private static final boolean JAEGER_ENABLED = false;
     private static String JAEGER_AGENT_HOST = "localhost";
     private static String JAEGER_AGENT_PORT = "6831";
 
@@ -86,9 +76,9 @@ public class Jaeger {
 
     /**
      * Releases all resources held by a LightStep tracer.
-     * @return returns a boolean to indicate if lighttep is enabled.
+     * @return returns a boolean to indicate if lightstep is enabled.
      */
-    public static final boolean isEnabled() {
+    public static boolean isEnabled() {
         return ConfigUtil.getOptionalBoolean(JAEGER_ENABLED_ENVVAR,
             JAEGER_ENABLED);
     }

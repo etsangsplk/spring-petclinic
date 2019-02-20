@@ -46,7 +46,7 @@ public class TracingHandlerDecorator implements HandlerInterceptorSpanDecorator 
 
     static class URLUtils {
 
-        static Pattern PATH_PATTERN = Pattern.compile("\\/?(?<tenantId>.*?)\\/streams\\/v.*?\\/.*");
+        static final Pattern PATH_PATTERN = Pattern.compile("\\/?(?<tenantId>.*?)\\/streams\\/v.*?\\/.*");
 
         /**
          * Extract tenant id from the request
@@ -78,8 +78,8 @@ public class TracingHandlerDecorator implements HandlerInterceptorSpanDecorator 
         /**
          * Extract method name from handler for span name.
          *
-         * @param model the request URI
-         * @return tenant id, or null if tenant id couldn't be extracted
+         * @param handler http handler that handles this request.
+         * @return method name for thi handler, use as span name.
          */
         static String methodName(Object handler) {
             return handler instanceof HandlerMethod

@@ -20,7 +20,7 @@ public class GenericTracer implements Closeable {
     private io.jaegertracing.Configuration config;
 
     /**
-     * Construct a global opentrcing tracer instance.
+     * Construct a global opentracing tracer instance.
      * @param serviceName name of the microservice this tracer is responsible for.
      * @return Tracer returns a opentracing tracer.
      */
@@ -28,13 +28,13 @@ public class GenericTracer implements Closeable {
         Assert.hasText(serviceName, "service name cannot be null");
         LOGGER.info("Initializing a tracer for service {}", serviceName);
         try {
-            if (Lightstep.isEnabled() == true) {
+            if (Lightstep.isEnabled()) {
                 LOGGER.info("LightStep is enabled");
                 Tracer tracer = Lightstep.registerTracer(serviceName);
                 GlobalTracer.register(tracer);
                 return GlobalTracer.get();
             }
-            if (Jaeger.isEnabled() == true) {
+            if (Jaeger.isEnabled()) {
                 LOGGER.info("Jaeger is enabled");
                 // Jaeger API returns a "config", so have to register tracer inside registerTracer.
                 this.config = Jaeger.registerTracer(serviceName);
@@ -51,16 +51,16 @@ public class GenericTracer implements Closeable {
     }
 
     /**
-     * Close a global opentrcing tracer instance.
+     * Close a global opentracing tracer instance.
      */
     public void close() {
-        if (Lightstep.isEnabled() == true) {
+        if (Lightstep.isEnabled()) {
             io.opentracing.Tracer tracer = GlobalTracer.get();
             if (tracer instanceof com.lightstep.tracer.jre.JRETracer) {
                 ((com.lightstep.tracer.jre.JRETracer) tracer).close();
             }
         }
-        if (Jaeger.isEnabled() == true) {
+        if (Jaeger.isEnabled()) {
             this.config.closeTracer();
         }
     }

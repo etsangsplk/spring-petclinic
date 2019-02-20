@@ -4,9 +4,9 @@ import javax.validation.constraints.NotNull;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public final class ConfigUtil {
-    private static String keyNotNullMessage = "key %s cannot be null";
-    private static String exceptionMessageFmt = "environment key %s returns no value";
+final class ConfigUtil {
+    private static final String keyNotNullMessage = "key %s cannot be null";
+    private static final String exceptionMessageFmt = "environment key %s returns no value";
 
     /**
      * Get the required value for  environment key.
