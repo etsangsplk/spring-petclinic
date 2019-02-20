@@ -23,11 +23,11 @@ public class TracingHandlerDecorator implements HandlerInterceptorSpanDecorator 
         String metaData = URLUtils.methodName(handler);
         if (metaData != null) {
             span.setOperationName(metaData);
-            String requestId = URLUtils.getRequestId(httpServletRequest);
-            String tenant = URLUtils.getTenantId(httpServletRequest);
-            span.setTag("requestId", requestId);
-            span.setTag("tenant", tenant);
         }
+        String requestId = URLUtils.getRequestId(httpServletRequest);
+        String tenant = URLUtils.getTenantId(httpServletRequest);
+        span.setTag("requestId", requestId);
+        span.setTag("tenant", tenant);
     }
 
     @Override

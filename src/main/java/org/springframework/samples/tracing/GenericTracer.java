@@ -8,8 +8,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.Assert;
 
+import java.io.Closeable;
+
 @Configuration
-public class TracerConfiguration {
+public class GenericTracer implements Closeable {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static boolean LIGHTSTEP_ENABLED = false;

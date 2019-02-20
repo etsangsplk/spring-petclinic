@@ -2,9 +2,8 @@ package org.springframework.samples.petclinic;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.samples.tracing.TracerConfiguration;
+import org.springframework.samples.tracing.GenericTracer;
 import org.springframework.samples.tracing.TracingFilterConfiguration;
-import org.springframework.samples.petclinic.PetClinicApplication;
 import org.springframework.samples.tracing.TracingHandlerDecorator;
 
 import io.opentracing.Tracer;
@@ -17,7 +16,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import io.opentracing.contrib.web.servlet.filter.TracingFilter;
 import io.opentracing.contrib.web.servlet.filter.ServletFilterSpanDecorator;
-import io.opentracing.contrib.spring.web.interceptor.*;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -33,7 +31,7 @@ public class PetClinicApplicationConfiguration implements WebMvcConfigurer, Serv
 
     @Bean
     public Tracer tracer() {
-        return (new TracerConfiguration()).getTracer(PetClinicApplication.SERVICE_NAME);
+        return (new GenericTracer()).getTracer(PetClinicApplication.SERVICE_NAME);
     }
 
     @Bean
