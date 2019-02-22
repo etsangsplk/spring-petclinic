@@ -1,5 +1,6 @@
 package org.springframework.samples.tracing;
 
+import com.google.common.collect.ImmutableMap;
 import io.opentracing.Tracer;
 import io.opentracing.noop.NoopTracerFactory;
 import io.opentracing.util.GlobalTracer;
@@ -30,7 +31,8 @@ public class GenericTracer implements Closeable {
         try {
             if (Lightstep.isEnabled()) {
                 LOGGER.info("LightStep is enabled");
-                Tracer tracer = Lightstep.registerTracer(serviceName);
+                ImmutableMap<String,String> config = Lightstep.settings();
+                Tracer tracer = Lightstep.registerTracer(serviceName, config);
                 GlobalTracer.register(tracer);
                 return GlobalTracer.get();
             }

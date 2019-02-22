@@ -2,14 +2,17 @@ package org.springframework.samples.tracing;
 
 import com.lightstep.tracer.jre.JRETracer;
 import com.lightstep.tracer.shared.Options;
+import com.google.common.collect.ImmutableMap;
 import io.opentracing.Tracer;
 import io.opentracing.noop.NoopTracerFactory;
 import io.opentracing.util.GlobalTracer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.String;
 import java.net.MalformedURLException;
 import java.util.NoSuchElementException;
+
 
 class Lightstep {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -30,12 +33,11 @@ class Lightstep {
      * Construct a global Lighstep tracer instance.
      * @param serviceName name of the microservice this tracer is responsible for.
      */
-    public static Tracer registerTracer(String serviceName) {
+    public static Tracer registerTracer(String serviceName, ImmutableMap<String, String> config) {
         try {
             LOGGER.info("Initializing Lightstep tracer with service name {}.", serviceName);
-            int verbosity = ConfigUtil.getOptionalInt(LIGHTSTEP_VERBOSE_ENVVAR,
-                Options.VERBOSITY_INFO);
-            String accesstoken = ConfigUtil.getRequiredEnv(LIGHTSTEP_ACCESSTOKEN_ENVVAR);
+            int verbosity = Integer.parseInt(config.get(LIGHTSTEP_ENABLED_ENVVAR));
+            String accesstoken = config.get(LIGHTSTEP_ACCESSTOKEN_ENVVAR);
 
             // TODO unable to use http to our http collector.
             Options options = new Options.OptionsBuilder()
@@ -61,8 +63,8 @@ class Lightstep {
      */
     public void close() {
         Tracer tracer = GlobalTracer.get();
-        if (tracer instanceof com.lightstep.tracer.jre.JRETracer) {
-            ((com.lightstep.tracer.jre.JRETracer) tracer).close();
+        if (tracer instanceof JRETracer) {
+            ((JRETracer) tracer).close();
         }
     }
 
@@ -73,5 +75,17 @@ class Lightstep {
     public static boolean isEnabled() {
         return ConfigUtil.getOptionalBoolean(LIGHTSTEP_ENABLED_ENVVAR,
             LIGHTSTEP_ENABLED);
+    }
+
+    public static ImmutableMap<String, String> settings() {
+        String verbosity = ConfigUtil.getOptionalEnv(LIGHTSTEP_VERBOSE_ENVVAR,
+            String.valueOf(Options.VERBOSITY_INFO));
+        String accesstoken = ConfigUtil.getRequiredEnv(LIGHTSTEP_ACCESSTOKEN_ENVVAR);
+        return ImmutableMap.of(
+            LIGHTSTEP_ENABLED_ENVVAR,
+            verbosity,
+            LIGHTSTEP_ACCESSTOKEN_ENVVAR,
+            accesstoken);
+
     }
 }
