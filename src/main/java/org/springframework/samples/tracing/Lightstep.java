@@ -61,7 +61,7 @@ class Lightstep {
     /**
      * Releases all resources held by a LightStep tracer.
      */
-    public void close() {
+    public static void close() {
         Tracer tracer = GlobalTracer.get();
         if (tracer instanceof JRETracer) {
             ((JRETracer) tracer).close();
@@ -86,6 +86,5 @@ class Lightstep {
             verbosity,
             LIGHTSTEP_ACCESSTOKEN_ENVVAR,
             accesstoken);
-
     }
 }

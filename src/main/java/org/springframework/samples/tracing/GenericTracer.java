@@ -1,5 +1,6 @@
 package org.springframework.samples.tracing;
 
+import com.lightstep.tracer.jre.JRETracer;
 import com.google.common.collect.ImmutableMap;
 import io.opentracing.Tracer;
 import io.opentracing.noop.NoopTracerFactory;
@@ -58,8 +59,8 @@ public class GenericTracer implements Closeable {
     public void close() {
         if (Lightstep.isEnabled()) {
             io.opentracing.Tracer tracer = GlobalTracer.get();
-            if (tracer instanceof com.lightstep.tracer.jre.JRETracer) {
-                ((com.lightstep.tracer.jre.JRETracer) tracer).close();
+            if (tracer instanceof JRETracer) {
+                ((JRETracer) tracer).close();
             }
         }
         if (Jaeger.isEnabled()) {

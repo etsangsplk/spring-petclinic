@@ -2,6 +2,7 @@ package org.springframework.samples.tracing;
 
 import io.opentracing.Span;
 import io.opentracing.contrib.spring.web.interceptor.*;
+import io.opentracing.tag.Tags;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.web.method.HandlerMethod;
@@ -35,7 +36,16 @@ public class TracingHandlerDecorator implements HandlerInterceptorSpanDecorator 
                                   HttpServletResponse httpServletResponse,
                                   Object handler,
                                   Exception ex,
-                                  Span span) {}
+                                  Span span) {
+        // It is a mirror of go-observation library.
+        // There is no internal standard of when span is an error.
+        if ((ex != null ) ||
+           (httpServletResponse.getStatus()
+                >= HttpServletResponse.SC_INTERNAL_SERVER_ERROR)){
+            Tags.ERROR.set(span, true);
+        }
+
+    }
 
     @Override
     public void onAfterConcurrentHandlingStarted(HttpServletRequest httpServletRequest,
