@@ -16,9 +16,6 @@ import java.io.Closeable;
 public class GenericTracer implements Closeable {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static boolean LIGHTSTEP_ENABLED = false;
-    private static boolean JAEGER_ENABLED = false;
-
     private io.jaegertracing.Configuration config;
 
     /**
@@ -40,7 +37,8 @@ public class GenericTracer implements Closeable {
             if (Jaeger.isEnabled()) {
                 LOGGER.info("Jaeger is enabled");
                 // Jaeger API returns a "config", so have to register tracer inside registerTracer.
-                this.config = Jaeger.registerTracer(serviceName);
+                ImmutableMap<String,String> config = Jaeger.settings();
+                this.config = Jaeger.registerTracer(serviceName, config);
                 return GlobalTracer.get();
             }
             GlobalTracer.register(NoopTracerFactory.create());

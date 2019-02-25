@@ -5,7 +5,6 @@ import com.lightstep.tracer.jre.JRETracer;
 import com.lightstep.tracer.shared.Options;
 import com.lightstep.tracer.shared.Status;
 import io.opentracing.Tracer;
-import io.opentracing.noop.NoopTracerFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
